@@ -2,13 +2,13 @@ import java.sql.*;
 import java.lang.UnsupportedOperationException;
 import gov.nist.sip.accounting.BlockManager;
 
-class UserNotFound extends Exception {
+class UserNotFoundException extends Exception {
     public UserNotFound(String message) {
         super(message);
     }
 }
 
-class UserBlocked extends Exception {
+class UserBlockedException extends Exception {
     public UserBlocked(String message) {
         super(message);
     }
