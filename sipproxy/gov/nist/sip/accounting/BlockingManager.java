@@ -1,6 +1,6 @@
 import java.sql.*;
 
-class Blocker {
+class BlockingManager {
     private static Blocker singleton = null;
 
     public static Blocker getInstance() {
