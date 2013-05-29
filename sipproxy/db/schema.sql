@@ -1,0 +1,24 @@
+
+CREATE  TABLE IF NOT EXISTS `user` (
+	`uid` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+	`name` VARCHAR(255) NULL ,
+	`password` VARCHAR(32) NULL ,
+	`address` VARCHAR(1024) NULL ,
+	PRIMARY KEY (`uid`)
+)
+ENGINE = MyISAM;
+
+CREATE  TABLE IF NOT EXISTS `block` (
+	`blocker` INT NOT NULL ,
+	`blockee` INT NOT NULL ,
+	PRIMARY KEY (`blocker`, `blockee`) ,
+	FOREIGN KEY (blocker)
+	REFERENCES user(uid)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+	FOREIGN KEY (blockee)
+	REFERENCES user(uid)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+)
+ENGINE = MyISAM;
