@@ -1,15 +1,17 @@
+package gov.nist.sip.accounting;
+
 import java.sql.*;
 
-class BlockingManager {
-    private static Blocker singleton = null;
+public class BlockingManager {
+    private static BlockingManager singleton = null;
 
-    public static Blocker getInstance() {
+    public static BlockingManager getInstance() {
         if (singleton == null) {
-            singleton = new Blocker();
+            singleton = new BlockingManager();
         }
         return singleton;
     }
-    public bool find(blocker, blockee) throws SQLException {
+    public boolean isBlocked(int blocker, int blockee) {
         String selectQuery = "SELECT\n"
                            + "    blocker\n"
                            + "FROM\n"
@@ -17,44 +19,50 @@ class BlockingManager {
                            + "WHERE\n"
                            + "    blocker = ?\n"
                            + "    AND blockee = ?\n";
-        PreparedStatement preparedStatement = dbConnection.prepareStatement(selectQuery);
-        preparedStatement.setInt(1, blocker);
-        preparedStatement.setInt(2, blockee);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        return resultSet.next();
+        try {
+        	PreparedStatement preparedStatement = Database.getConnection().prepareStatement(selectQuery);
+        	preparedStatement.setInt(1, blocker);
+	        preparedStatement.setInt(2, blockee);
+	        ResultSet rs = preparedStatement.executeQuery();
+	      
+	        return rs.next();
+        }
+        catch (SQLException e) {
+        	e.printStackTrace();
+        	return false;
+        }
     }
-    public void block(blocker, blockee) throws SQLException {
+    public boolean block(int blocker, int blockee){
         try {
             String insertQuery = "INSERT INTO\n"
                                + "    block\n"
                                + "(blocker, blockee)\n"
                                + "VALUES\n"
                                + "(?, ?)\n";
-            PreparedStatement = dbConnection.prepareStatement(insertQuery);
+            PreparedStatement preparedStatement = Database.getConnection().prepareStatement(insertQuery);
             preparedStatement.setInt(1, blocker);
             preparedStatement.setInt(2, blockee);
             preparedStatement.executeUpdate();
             return true;
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             return false;
         }
     }
-    public void unblock(blocker, blockee) throws SQLException {
+    public boolean unblock(int blocker, int blockee) {
         try {
             String deleteQuery = "DELETE FROM\n"
                                + "    block\n"
                                + "WHERE\n"
                                + "    blocker = ?\n"
                                + "    AND blockee = ?\n";
-            PreparedStatement = dbConnection.prepareStatement(deleteQuery);
+            PreparedStatement preparedStatement = Database.getConnection().prepareStatement(deleteQuery);
             preparedStatement.setInt(1, blocker);
             preparedStatement.setInt(2, blockee);
             preparedStatement.executeUpdate();
             return true;
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             return false;
         }
     }
