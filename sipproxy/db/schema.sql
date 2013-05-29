@@ -1,17 +1,16 @@
-
-CREATE  TABLE IF NOT EXISTS `user` (
-	`uid` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-	`name` VARCHAR(255) NULL ,
-	`password` VARCHAR(32) NULL ,
-	`address` VARCHAR(1024) NULL ,
-	PRIMARY KEY (`uid`)
+CREATE TABLE IF NOT EXISTS user (
+	uid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	name VARCHAR(255) NULL,
+	password VARCHAR(32) NULL,
+	address VARCHAR(1024) NULL,
+	PRIMARY KEY (uid)
 )
 ENGINE = MyISAM;
 
-CREATE  TABLE IF NOT EXISTS `block` (
-	`blocker` INT NOT NULL ,
-	`blockee` INT NOT NULL ,
-	PRIMARY KEY (`blocker`, `blockee`) ,
+CREATE TABLE IF NOT EXISTS block (
+	blocker INT NOT NULL,
+	blockee INT NOT NULL,
+	PRIMARY KEY (blocker, blockee),
 	FOREIGN KEY (blocker)
 	REFERENCES user(uid)
 	ON DELETE CASCADE
@@ -20,5 +19,38 @@ CREATE  TABLE IF NOT EXISTS `block` (
 	REFERENCES user(uid)
 	ON DELETE CASCADE
 	ON UPDATE CASCADE
+)
+ENGINE = MyISAM;
+
+CREATE TABLE IF NOT EXISTS forward (
+    forwarder INT NOT NULL,
+    forwardee INT NOT NULL,
+    PRIMARY KEY (forwarder, forwardee)
+    FOREIGN KEY (forwarder)
+    REFERENCES user(uid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (forwardee)
+    REFERENCES user(uid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+ENGINE = MyISAM;
+
+CREATE TABLE IF NOT EXISTS callhistory (
+    cid INT PRIMARY KEY NOT NULL,
+    caller INT NOT NULL,
+    callee INT NOT NULL,
+    start FLOAT NOT NULL,
+    duration FLOAT NOT NULL,
+    cost INT NOT NULL,
+    FOREIGN KEY (caller)
+    REFERENCES user(uid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (callee)
+    REFERENCES user(uid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
 ENGINE = MyISAM;
