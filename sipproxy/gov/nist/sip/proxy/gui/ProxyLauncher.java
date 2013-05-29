@@ -6,6 +6,7 @@ package gov.nist.sip.proxy.gui;
  * Created on April 8, 2002, 10:10 AM
  */
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -107,7 +108,6 @@ public class ProxyLauncher extends JFrame{
             
             listenerProxy=new ListenerProxy(this);
             initComponents();
-            initDatabase();
             
             show();
             
@@ -142,19 +142,7 @@ public class ProxyLauncher extends JFrame{
         return listenerProxy;
     }
     
-    public void initDatabase() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Loaded driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/mysql?user=root&password=1234");
-            System.out.println("Connected to MySQL");
-            con.close();
-        } 
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
+   
 /*******************************************************************************/
 /*******************************************************************************/
 /*******************************************************************************/
