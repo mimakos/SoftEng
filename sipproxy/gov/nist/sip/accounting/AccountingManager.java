@@ -1,6 +1,14 @@
 import gov.nist.sip.accounting.User;
 
 class AccountingManager {
+    static private AccountingManager inst = null;
+
+    static public AccountingManager getInstance() {
+        if (inst == null) {
+            inst = new AccountingManager();
+        }
+        return inst;
+    }
     public void invite(String uri_a, String uri_b) {
         User.fromURI(uri_a).invite(User.fromURI(uri_b));
     }
