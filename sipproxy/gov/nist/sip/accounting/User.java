@@ -17,12 +17,11 @@ class UserBlocked extends Exception {
 class User {
     private int id;
 
-    static public fromURI(String uri) {
-        return new User(...);
+    User(int id) {
+        this.id = id;
     }
-    User(String name) throws UserNotFound, UnsupportedOperationException {
-        throw UnsupportedOperationException;
-        // TODO: this.id = ...;
+    static public fromURI(String uri) throws UserNotFound {
+        return new User(...);
     }
     public boolean hasBlocked(User target) {
         return BlockManager.getInstance().isBlocked(this.id, target.id);
