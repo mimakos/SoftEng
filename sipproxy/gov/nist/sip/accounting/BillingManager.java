@@ -1,3 +1,5 @@
+import gov.nist.sip.accounting.User;
+
 class BillingManager {
     static private BillingManager inst = null;
     
@@ -7,8 +9,8 @@ class BillingManager {
         }
         return inst;
     }
-    public void beginCall() {
+    public void beginCall(User from, User to) {
     }
-    public void endCall() {
+    public void endCall(User from, User to) {
     }
 }
