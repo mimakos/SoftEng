@@ -20,8 +20,29 @@ class User {
     User(int id) {
         this.id = id;
     }
-    static public fromURI(String uri) throws UserNotFound {
-        return new User(...);
+    static public User fromURI(String uri) throws UserNotFound {
+        String selectQuery = "SELECT\n"
+                           + "    uid\n"
+                           + "FROM\n"
+                           + "    user\n"
+                           + "WHERE\n"
+                           + "    name = ?\n"
+        try {
+        	PreparedStatement preparedStatement = Database.getConnection().prepareStatement(selectQuery);
+        	preparedStatement.setInt(1, uri);
+	        ResultSet rs = preparedStatement.executeQuery();
+	      
+	        row = rs.next();
+            if (row == false) {
+                throw UserNotFoundException();
+            }
+            userid = rs.getInt("uid");
+            return new User(userid);
+        }
+        catch (SQLException e) {
+        	e.printStackTrace();
+        	return null;
+        }
     }
     public boolean hasBlocked(User target) {
         return BlockManager.getInstance().isBlocked(this.id, target.id);
@@ -34,6 +55,7 @@ class User {
     public void cancel(User target) {
     }
     public void ack(User target) {
+        BillingManager.getInstance().beginCall();
     }
     public void bye(User target) {
     }
